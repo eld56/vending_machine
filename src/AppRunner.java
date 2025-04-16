@@ -89,9 +89,8 @@ public class AppRunner {
             print(String.format(" %s - %s", products.get(i).getActionLetter().getValue(), products.get(i).getName()));
         }
     }
-
     private String fromConsole() {
-        return new Scanner(System.in).nextLine();
+            return new Scanner(System.in).nextLine();
     }
 
     private void showProducts(UniversalArray<Product> products) {
