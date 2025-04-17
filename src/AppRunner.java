@@ -42,11 +42,9 @@ public class AppRunner {
            }else {
                switch (userChoose) {
                    case "card":
-                       actionU = cardReaceiver.getMoney();
                        isChoose = false;
                        break;
                    case "coin":
-                       actionU = coinAcceptor.getAmount();
                        isChoose = false;
                        break;
                    default:
@@ -88,8 +86,14 @@ public class AppRunner {
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
-            if (actionU >= products.get(i).getPrice()) {
-                allowProducts.add(products.get(i));
+            if(userChoose.equals("card")){
+                if (cardReaceiver.getMoney() >= products.get(i).getPrice()) {
+                    allowProducts.add(products.get(i));
+                }
+            } else if(userChoose.equals("coin")){
+                if (coinAcceptor.getAmount() >= products.get(i).getPrice()) {
+                    allowProducts.add(products.get(i));
+                }
             }
         }
         return allowProducts;
