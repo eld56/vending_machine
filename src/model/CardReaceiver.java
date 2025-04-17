@@ -1,9 +1,9 @@
 package model;
 
-public class MoneyReaceiver {
+public class CardReaceiver {
     private int money;
 
-    public MoneyReaceiver(int money) {
+    public CardReaceiver(int money) {
         this.money = money;
     }
 
