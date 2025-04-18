@@ -3,6 +3,7 @@ import model.*;
 import util.UniversalArray;
 import util.UniversalArrayImpl;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AppRunner {
@@ -10,11 +11,10 @@ public class AppRunner {
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
 
     private  final CardReaceiver cardReaceiver;
-
     private  final CoinAcceptor coinAcceptor;
+    private static int userNumberCard;
+    private static int userPassword;
 
-    private  int actionU;
-    private  int actionU2;
     private  String userChoose;
 
     private static boolean isExit = false;
@@ -29,15 +29,32 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        cardReaceiver = new CardReaceiver(100);
+
+        cardReaceiver = new CardReaceiver(100,userNumberCard,userPassword);
         coinAcceptor = new CoinAcceptor(100);
-        System.out.println("Выбирите способ оплаты: card/coin:");
+        Card();
+        choosePay();
+    }
+    public void Card(){
+            try {
+                System.out.println("Введите номер карты");
+                userNumberCard = sc.nextInt();
+
+                System.out.println("Введите пароль карты");
+                userPassword = sc.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Вы ввели не число");
+            }
+
+    }
+    public void choosePay(){
         boolean isChoose = true;
-       while (isChoose){
-           userChoose = sc.nextLine();
+        System.out.println("Выбирите способ оплаты: card/coin:");
+        userChoose = sc.nextLine();
+
+        while (isChoose){
 
            if(userChoose.isBlank()){
-               System.out.println("Выбирите способ оплаты: card/coin:");
                userChoose = sc.nextLine();
            }else {
                switch (userChoose) {
@@ -47,6 +64,7 @@ public class AppRunner {
                    case "coin":
                        isChoose = false;
                        break;
+
                    default:
                        System.out.println("not founded action!");
                }
@@ -54,7 +72,6 @@ public class AppRunner {
 
        }
     }
-
     public static void run() {
         AppRunner app = new AppRunner();
 
@@ -101,6 +118,7 @@ public class AppRunner {
 
     private void chooseAction(UniversalArray<Product> products) {
         print(" a - Пополнить баланс");
+        print(" m - Изменить способ оплаты");
         showActions(products);
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
@@ -112,7 +130,7 @@ public class AppRunner {
                 print("Вы пополнили баланс на " + userPay);
             }else if(userChoose.equals("coin")){
                 coinAcceptor.setAmount(coinAcceptor.getAmount() + 10);
-                print("Вы пополнили баланс на 10");
+                print("Вы пополнили баланс на 10 монет");
             }
 
             return;
