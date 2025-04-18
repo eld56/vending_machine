@@ -32,7 +32,6 @@ public class AppRunner {
 
         cardReaceiver = new CardReaceiver(100,userNumberCard,userPassword);
         coinAcceptor = new CoinAcceptor(100);
-        Card();
         choosePay();
     }
     public void Card(){
@@ -55,10 +54,12 @@ public class AppRunner {
         while (isChoose){
 
            if(userChoose.isBlank()){
+               System.out.println("Выбирите способ оплаты: card/coin:");
                userChoose = sc.nextLine();
            }else {
-               switch (userChoose) {
+               switch (userChoose.toLowerCase()) {
                    case "card":
+                       Card();
                        isChoose = false;
                        break;
                    case "coin":
@@ -67,6 +68,8 @@ public class AppRunner {
 
                    default:
                        System.out.println("not founded action!");
+                       userChoose = "";
+                       break;
                }
            }
 
@@ -121,14 +124,20 @@ public class AppRunner {
         print(" m - Изменить способ оплаты");
         showActions(products);
         print(" h - Выйти");
-        String action = fromConsole().substring(0, 1);
+        String input = fromConsole().trim();
+        if (input.isEmpty()) {
+            print("Пустой ввод. Повторите попытку.");
+            return;
+        }
+        String action = input.substring(0, 1);
         if ("a".equalsIgnoreCase(action)) {
-            if(userChoose.equals("card")){
+            if(userChoose.equals("card")) {
                 System.out.println("Введите сумму пополнения");
                 int userPay = sc.nextInt();
                 cardReaceiver.setMoney(cardReaceiver.getMoney() + userPay);
                 print("Вы пополнили баланс на " + userPay);
-            }else if(userChoose.equals("coin")){
+            }
+            else if(userChoose.equals("coin")){
                 coinAcceptor.setAmount(coinAcceptor.getAmount() + 10);
                 print("Вы пополнили баланс на 10 монет");
             }
@@ -149,12 +158,13 @@ public class AppRunner {
                     break;
                 }
             }
-        } catch (IllegalArgumentException e) {
+        }catch (IllegalArgumentException e) {
             if ("h".equalsIgnoreCase(action)) {
-                isExit = true;
-            } else {
+                isExit = false;
+            }else {
                 print("Недопустимая буква. Попрбуйте еще раз.");
                 chooseAction(products);
+
             }
         }
 
